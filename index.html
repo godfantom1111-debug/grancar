@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GranCar - Пригон авто из-за границы в Беларусь и СНГ под ключ</title>
+    <meta name="description" content="Прямая покупка Rolls-Royce, BMW M, Mercedes-Maybach из Европы в Беларусь и СНГ. Таможня под ключ. Максимальная комплектация."/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+  @font-face { font-family: 'Inter'; src: local('Inter'); }
+  @font-face { font-family: 'Orbitron'; src: local('Orbitron'); }
+        :root {
+            --bg: #0e1a2f;
+            --card: #15243f;
+            --accent: #0066ff;
+            --accent-dark: #0040aa;
+            --accent-glow: #1a66ff;
+            --text: #e8f0ff;
+            --text-light: #b0c8e0;
+            --silver: #a0b0d0;
+            --border: #2a3a55;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(20,36,63,0.96);
+            backdrop-filter: blur(14px);
+            z-index: 1000;
+            padding: 1.2rem 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .logo {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #0066ff, #002b66);
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 20px rgba(0,102,255,0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+        }
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            background: linear-gradient(90deg, var(--accent), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav ul {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav a:hover { color: var(--accent); }
+
+        .hero {
+            height: 100vh;
+            min-height: 820px;
+            background: linear-gradient(rgba(14,26,47,0.70), rgba(14,26,47,0.82)),
+                        url('./wall.png') center/cover no-repeat fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 6%;
+        }
+        .hero-content {
+            max-width: 960px;
+            background: rgba(21,36,63,0.88);
+            padding: 3.5rem 4.5rem;
+            border-radius: 24px;
+            box-shadow: 0 15px 50px rgba(0,102,255,0.25);
+        }
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3.2rem, 9vw, 6rem);
+            margin-bottom: 1.4rem;
+            line-height: 1.05;
+            background: linear-gradient(90deg, #ffffff, var(--accent), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 720px;
+            margin: 0 auto 2.5rem;
+            color: var(--text-light);
+        }
+        .btn {
+            background: var(--accent);
+            color: white;
+            padding: 1.1rem 2.6rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.35s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(0,102,255,0.45);
+        }
+
+        section { padding: 9rem 6%; }
+        h2 {
+            text-align: center;
+            font-size: 3.2rem;
+            margin-bottom: 3.5rem;
+            font-weight: 700;
+            color: var(--silver);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .card {
+            background: var(--card);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 1px solid var(--border);
+        }
+        .card:hover {
+            transform: translateY(-16px);
+            box-shadow: 0 25px 50px rgba(0,102,255,0.3);
+        }
+        .card img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+        }
+        .card-content {
+            padding: 2rem;
+        }
+        .card h3 {
+            font-size: 1.7rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .contacts {
+            background: linear-gradient(135deg, #0e1a2f, #15243f);
+            text-align: center;
+        }
+        .contact-info p {
+            font-size: 1.25rem;
+            margin: 1rem 0;
+            color: var(--text-light);
+        }
+        form {
+            max-width: 520px;
+            margin: 3.5rem auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+        }
+        input, button {
+            padding: 1.2rem;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: #1a2f4a;
+            color: var(--text);
+            font-size: 1.15rem;
+        }
+        button {
+            background: var(--accent);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        button:hover { background: var(--accent-dark); }
+
+        footer {
+            background: #0e1a2f;
+            padding: 4rem 6% 2.5rem;
+            text-align: center;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 1rem 5%; }
+            nav ul { gap: 1.4rem; font-size: 0.95rem; }
+            .hero { min-height: 85vh; }
+            section { padding: 6rem 5%; }
+            h2 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-container">
+        <div class="logo">GC</div>
+        <div class="logo-text">GranCar</div>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#home">Главная</a></li>
+            <li><a href="#services">Услуги</a></li>
+            <li><a href="#contacts">Контакты</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="home" class="hero">
+    <div class="hero-content">
+        <h1>GranCar</h1>
+        <p>Мы специализируемся на подборе, покупке и доставке автомобилей из Европы, США, Китая и Кореи в Беларусь. Прямая покупка, полная растаможка, доставка в Беларусь и страны СНГ.</p>
+        <a href="#contacts" class="btn">Подобрать свой автомобиль →</a>
+    </div>
+</section>
+
+<section id="services">
+    <h2>Наши услуги — только лучшие авто</h2>
+    <div class="services-grid">
+        <div class="card">
+            <img src="./1.jpg" alt="BMW M5 2025">
+            <div class="card-content">
+                <h3>Премиум-подбор под ключ</h3>
+                <p>Индивидуальный поиск по бюджету и пожеланиям. Мы имеем доступ ко всем дилерским автоцентрам и эксклюзивным лизинговым аукционам Германии, Бельгии, Литвы, Франции. Подберем для вас лучший вариант за 24–48 часов.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="./2.jpg" alt="Rolls-Royce Phantom">
+            <div class="card-content">
+                <h3>Покупка без посредников</h3>
+                <p>Покупка у дилеров и прямые ставки на аукционах + консультации экспертов. Экономия 20–35% от цен в РБ/РФ без цепочек перекупщиков. Только проверенные варианты с чистой историей.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="./3.jpg" alt="Mercedes-Maybach">
+            <div class="card-content">
+                <h3>Доставка и логистика под ключ</h3>
+                <p>От двери до двери в Беларусь, Россию, СНГ за 35–55 дней. Полная страховка CMR, отслеживание онлайн, автовоз. Автомобили приезжают в идеальном состоянии — без риска.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="./4.jpg" alt="Maybach">
+            <div class="card-content">
+                <h3>Таможенное оформление по выгодным схемам</h3>
+                <p>Работаем по самым актуальным нормам 2026 года. Скидки до 50% для физ- и юрлиц. Растаможка «под ключ» — без сюрпризов. Растаможка и Регистрация: Указ 140, СВХ, ЭПТС. Полная регистрация в ГАИ.
+Дополнительно: Страхование (1.5-3% от стоимости), лизинг/кредит.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="./5.jpg" alt="BMW Frozen">
+            <div class="card-content">
+                <h3>Полная проверка + отчёты</h3>
+                <p>Все отчеты по автомобилю бесплатно. Детальные фото/видео по авто, проверка техсостояния, пробега, скрытых повреждений. Гарантия: 30 дней или 5000 км на двигатель и коробку.
+Только лучшие автомобили.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="./6.jpg" alt="BMW M">
+            <div class="card-content">
+                <h3>Чистая доставка авто</h3>
+                <p>Уже нашли лот? Присылаете номер — мы выигрываем и доставляем ваш авто без лишних консультаций. Быстрая Доставка: 3-4 недели из Европы, 60-100 дней из США/Китая. Стоимость услуги — фиксированная.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contacts" class="contacts">
+    <h2>Свяжитесь с экспертом по подбору авто</h2>
+    <div class="contact-info">
+        <p><strong>Минск</strong> • +375 (44) 7777 002</p>
+        <p>Telegram / WhatsApp: <a href="https://t.me/phantomautogroup" style="color:var(--accent)">@grancarby</a></p>
+        <p>Круглосуточно по предварительной договорённости</p>
+    </div>
+
+    <form id="lead-form">
+        <input type="tel" placeholder="Ваш номер телефона" required pattern="[+]?[0-9]{9,15}"/>
+        <button type="submit" class="btn">Получить эксклюзивный подбор</button>
+    </form>
+</section>
+
+<footer>
+    <p>© 2026 Phantom Auto Group. Только премиум авто. Все права защищены.</p>
+</footer>
+
+<script>
+    document.getElementById('lead-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const phone = e.target[0].value;
+        if (!phone) return;
+        alert(`Заявка принята! Свяжемся в течение 30 минут.\nНомер: ${phone}`);
+        e.target.reset();
+    });
+</script>
+
+</body>
+</html>

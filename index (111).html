@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>GranCar - Пригон авто из-за границы в Беларусь и СНГ под ключ</title>
+    <meta name="description" content="Прямая покупка авто из Европы, Китая, Кореи в Беларусь и СНГ. Таможня и доставка под ключ."/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            /* Darker theme (~50% darker) */
+            --page-overlay: rgba(3,6,10,0.64);
+            --card-overlay: rgba(6,10,16,0.78);
+            --surface: rgba(12,18,28,0.88);
+            --muted-surface: rgba(255,255,255,0.04);
+            --accent: #2b8bff;
+            --accent-dark: #1366d6;
+            --text: #e8eef8;
+            --text-dim: #b6c6da;
+            --border: rgba(255,255,255,0.04);
+            --shadow: 0 10px 30px rgba(2,6,20,0.6);
+            --header-height: 72px;
+        }
+
+        *{box-sizing:border-box;margin:0;padding:0}
+        html,body{height:100%}
+        body{
+            font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            color:var(--text);
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            line-height:1.5;
+
+            /* wall image as background for the whole site with darker overlay */
+            background:
+              linear-gradient(180deg, var(--page-overlay), rgba(3,6,10,0.64)),
+              url('./img/wall.png') center/cover fixed no-repeat;
+            background-color: #05060a;
+        }
+
+        @media (max-width:768px){
+            body{ background-attachment: scroll; background-position: center top; }
+        }
+
+        /* Corner logo (new) */
+        .corner-logo {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 98px;
+            height: 98px;
+            z-index: 1400;
+            display: block;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+        }
+        .corner-logo img {
+            width:100%;
+            height:100%;
+            object-fit:contain;
+            display:block;
+        }
+
+        /* Header */
+        header{
+            position:fixed;left:0;right:0;top:0;
+            display:flex;align-items:center;justify-content:space-between;
+            gap:1rem;padding:0.45rem 5%;
+            height:var(--header-height);
+            background: linear-gradient(180deg, rgba(6,10,16,0.34), rgba(6,10,16,0.24)); /* slightly transparent */
+            backdrop-filter: blur(6px);
+            border-bottom:1px solid var(--border);
+            z-index:1200;
+        }
+
+        .logo-container{
+            display:flex;align-items:center;gap:0.6rem;flex:0 0 auto;
+        }
+        /* small logo inside header (kept for layout) */
+        .logo-img-small {
+            width:66px;
+            height:66px;
+            object-fit:contain;
+            border-radius:6px;
+            display:block;
+        }
+
+        /* GranCar text - compressed / tighter */
+        .logo-text{
+            font-family:'Orbitron',sans-serif;font-size:0.96rem;font-weight:700;
+            color:var(--text);
+            letter-spacing:0.6px;
+            transform:translateY(1px);
+            white-space:nowrap;
+        }
+
+        /* Center tagline (always two lines) */
+        .header-tagline{
+            flex:1 1 auto;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            gap:0;
+            padding:0 12px;
+            pointer-events:none; /* decorative */
+            line-height:1.02;
+        }
+        .header-tagline .line1{
+            font-weight:700;
+            font-size:0.98rem;
+            color:var(--text);
+        }
+        .header-tagline .line2{
+            font-weight:600;
+            font-size:0.86rem;
+            color:var(--text-dim);
+        }
+
+        /* Right area: nav / phone / hamburger */
+        nav{display:flex;align-items:center;gap:1rem;flex:0 0 auto}
+        .desktop-nav{display:flex;gap:1.2rem;list-style:none;align-items:center}
+        .desktop-nav a{color:var(--text-dim);text-decoration:none;font-weight:600}
+        .desktop-nav a:hover{color:var(--accent)}
+        .header-phone{
+            color:var(--text);
+            font-weight:700;
+            margin-left:1rem;
+            font-size:0.98rem;
+            display:none; /* shown on desktop via media query */
+            white-space:nowrap;
+        }
+
+        /* Hamburger */
+        .hamburger{
+            display:none;border:none;background:transparent;cursor:pointer;padding:6px;border-radius:10px;flex:0 0 auto;
+            align-items:center;justify-content:center;
+        }
+        .hamburger .icon{position:relative;width:30px;height:20px;display:block}
+        .hamburger .icon span{
+            position:absolute;left:0;right:0;height:3px;background:var(--text);border-radius:2px;
+            transition:transform .28s,opacity .2s,top .28s,background .18s;
+        }
+        .hamburger .icon span:nth-child(1){top:0}
+        .hamburger .icon span:nth-child(2){top:8px}
+        .hamburger .icon span:nth-child(3){top:16px}
+
+        /* Menu overlay: semi-transparent 50% over wall (keeps wall visible) */
+        .menu-overlay{
+            position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+            background:
+              linear-gradient(0deg, rgba(6,10,16,0.5), rgba(6,10,16,0.5)),
+              url('./img/wall.png') center/cover fixed no-repeat;
+            backdrop-filter: blur(6px);
+            z-index:1300;padding:2.6rem 4%;
+        }
+        .menu-panel{
+            width:100%;max-width:820px;background:rgba(8,12,18,0.86);border-radius:16px;
+            box-shadow:var(--shadow);overflow:hidden;border:1px solid rgba(255,255,255,0.03);
+            display:flex;flex-direction:column;
+        }
+        .menu-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.2rem;border-bottom:1px solid rgba(255,255,255,0.03)}
+        .menu-header .title{font-weight:800;color:var(--text);font-size:1.05rem}
+        .menu-close{background:transparent;border:none;font-size:1.1rem;cursor:pointer;color:var(--text)}
+        .menu-body{padding:1rem 1.2rem;max-height:62vh;overflow:auto}
+        .menu-list{display:flex;flex-direction:column;gap:0.6rem;list-style:none;padding:0;margin:0}
+        .menu-list a{
+            padding:0.85rem 1rem;border-radius:10px;color:var(--text);text-decoration:none;font-weight:700;
+            display:flex;align-items:center;gap:0.6rem;transition:background .18s,transform .12s;
+        }
+        .menu-list a:hover{background:rgba(255,255,255,0.02);transform:translateX(6px);color:var(--accent)}
+        .menu-footer{padding:0.9rem 1.2rem;border-top:1px solid rgba(255,255,255,0.03);display:flex;gap:0.8rem;align-items:center;justify-content:space-between}
+
+        /* Hero: CTA button only */
+        .hero{
+            padding-top:8px; /* small offset from header */
+            min-height:24vh; /* compact */
+            display:flex;align-items:center;justify-content:center;text-align:center;padding-left:6%;padding-right:6%;
+            margin-bottom:0;
+        }
+        .hero-cta{display:flex;align-items:center;justify-content:center;padding:4px;margin-bottom:0}
+        .btn{
+            background:var(--accent);
+            color:white;
+            padding:0.82rem 1.6rem;
+            border-radius:999px;
+            border:none;
+            font-weight:700;
+            cursor:pointer;
+            box-shadow: 0 12px 30px rgba(11,54,135,0.28);
+            transition:transform .12s, box-shadow .12s;
+            font-size:1.02rem;
+        }
+        .btn:hover{transform:translateY(-3px);box-shadow: 0 22px 46px rgba(11,54,135,0.32)}
+
+        /* Sections: tighten spacing to remove vertical gaps after CTA */
+        section{padding:1.8rem 6rem 2.8rem 6rem}
+        #services{padding-top:6px;margin-top:6px}
+
+        /* Stylish two-line services title, brighter */
+        .services-title{
+            display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;margin:6px auto 12px;max-width:760px;
+        }
+        .services-title .main{
+            font-family:'Orbitron',sans-serif;
+            font-size:1.9rem;
+            line-height:1.02;
+            font-weight:800;
+            background: linear-gradient(90deg,var(--accent),#7fc1ff);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            text-shadow: 0 8px 30px rgba(11,54,135,0.12);
+        }
+        .services-title .sub{
+            font-size:1.02rem;color:var(--text-dim);font-weight:700;
+            letter-spacing:0.3px;
+        }
+
+        /* Services grid */
+        .services-grid{display:grid;gap:1.2rem;max-width:1200px;margin:0 auto}
+        @media (min-width:1200px){ .services-grid{grid-template-columns:repeat(3,1fr)} .card img{height:220px} }
+        @media (min-width:800px) and (max-width:1199px){ .services-grid{grid-template-columns:repeat(2,1fr)} .card img{height:200px} }
+        @media (max-width:799px){ .services-grid{grid-template-columns:1fr} .card img{height:160px} }
+
+        /* Cards: dark overlay + wall background */
+        .card{
+            border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);
+            box-shadow:var(--shadow);
+            background:
+              linear-gradient(180deg, rgba(4,6,10,0.6), rgba(4,6,10,0.5)),
+              url('./img/wall.png') center/cover no-repeat;
+            display:flex;flex-direction:column;
+        }
+        .card img{width:100%;height:160px;object-fit:cover;display:block;opacity:0.95}
+        .card-content{padding:0.95rem 1rem;background:linear-gradient(180deg, rgba(14,20,30,0.88), rgba(12,18,28,0.88))}
+        .card h3{color:var(--accent);margin-bottom:0.45rem;font-size:1.05rem}
+        .card p{color:var(--text-dim);font-size:0.92rem;white-space:pre-wrap;margin:0}
+
+        /* Contacts / form / footer */
+        .contacts{background:transparent;text-align:center;padding-bottom:2.6rem}
+        .contact-info p{color:var(--text-dim);margin:0.4rem 0}
+        form{max-width:520px;margin:1.2rem auto 0;display:flex;flex-direction:column;gap:0.8rem}
+        input[type="tel"]{padding:0.88rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:var(--muted-surface);color:var(--text)}
+        footer{padding:1.8rem 6%;text-align:center;color:var(--text-dim);border-top:1px solid rgba(255,255,255,0.03)}
+
+        /* Mobile: show hamburger and keep tagline two lines */
+        @media (max-width:900px){
+            .desktop-nav{display:none}
+            .hamburger{display:flex;width:54px;height:44px;border-radius:12px;background:linear-gradient(180deg,var(--accent),var(--accent-dark));align-items:center;justify-content:center;box-shadow:0 8px 28px rgba(19,102,214,0.18)}
+            .hamburger .icon{width:30px;height:20px}
+            .hamburger .icon span{height:3px;background:#fff}
+            .header-tagline{align-items:center}
+            .header-tagline .line1{font-size:0.92rem}
+            .header-tagline .line2{font-size:0.82rem}
+            .menu-overlay{padding:2rem 3%}
+            .hero{padding-top:8px;min-height:22vh}
+            .btn{font-size:0.98rem;padding:0.78rem 1.2rem}
+            section{padding:1.6rem 4% 2.4rem 4%}
+            .services-title .main{font-size:1.6rem}
+            /* Hide corner logo on very small screens to avoid overlap with header */
+            .corner-logo{display:block}
+        }
+
+        /* Desktop: show phone */
+        @media (min-width:901px){
+            .header-phone{display:block}
+        }
+
+        /* Hamburger open animation */
+        .is-open .hamburger .icon span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+        .is-open .hamburger .icon span:nth-child(2){opacity:0}
+        .is-open .hamburger .icon span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+        .is-open .menu-overlay{display:flex}
+    </style>
+</head>
+<body>
+    <!-- Corner logo inserted in top-left corner as requested
+    <a href="#home" class="corner-logo" aria-label="GranCar — на главную">
+        <img src="./img/logo.png" alt="GranCar logo">
+    </a>
+     -->
+
+<header id="site-header" role="banner">
+    <div class="logo-container">
+        <!-- Small logo kept for header layout (optional) -->
+        <img src="./img/logo.png" alt="GranCar" class="logo-img-small" />
+        <div>
+            <div class="logo-text"></div>
+        </div>
+    </div>
+
+    <!-- Tagline always in two lines -->
+    <div class="header-tagline" aria-hidden="true">
+        <div class="line1">Автомобили из Европы и Азии</div>
+        <div class="line2">покупка, растаможка, доставка</div>
+    </div>
+
+    <nav aria-label="Главная навигация">
+        <ul class="desktop-nav">
+            <li><a href="#home">Главная</a></li>
+            <li><a href="#services">Услуги</a></li>
+            <li><a href="#about">О нас</a></li>
+            <li><a href="#fleet">Автопарк</a></li>
+            <li><a href="#prices">Цены</a></li>
+            <li><a href="#contacts">Контакты</a></li>
+        </ul>
+
+        <!-- Phone added on desktop -->
+        <div class="header-phone">+375 44 7777 002</div>
+
+        <button class="hamburger" id="hamburger" aria-controls="menu-overlay" aria-expanded="false" aria-label="Открыть меню">
+            <span class="icon" aria-hidden="true">
+                <span></span><span></span><span></span>
+            </span>
+        </button>
+    </nav>
+</header>
+
+<!-- Menu overlay -->
+<div class="menu-overlay" id="menu-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="menu-panel" role="document">
+        <div class="menu-header">
+            <div class="title">Меню</div>
+            <button class="menu-close" id="menu-close" aria-label="Закрыть меню">✕</button>
+        </div>
+        <div class="menu-body">
+            <ul class="menu-list" id="menu-list">
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#services">Услуги</a></li>
+                <li><a href="#about">О нас</a></li>
+                <li><a href="#fleet">Автопарк</a></li>
+                <li><a href="#prices">Цены</a></li>
+                <li><a href="#faq">Вопросы</a></li>
+                <li><a href="#reviews">Отзывы</a></li>
+                <li><a href="#contacts">Контакты</a></li>
+                <li><a href="#policy">Политика</a></li>
+                <li><a href="#blog">Блог</a></li>
+            </ul>
+        </div>
+        <div class="menu-footer">
+            <div style="font-size:0.95rem;color:var(--text-dim)">Тел: +375 (44) 7777 002</div>
+            <a href="#contacts" class="btn" style="padding:0.6rem 1rem">Связаться</a>
+        </div>
+    </div>
+</div>
+
+<!-- Page content -->
+<section id="home" class="hero" role="region" aria-label="Главная">
+    <!-- hero-content removed; CTA button only -->
+</section>
+
+<section id="services" aria-label="Наши услуги">
+    <div class="services-title">
+        <div class="main">Наши услуги</div>
+        <div class="sub">только лучшие авто</div>
+    </div>
+
+    <div class="services-grid">
+        <div class="card">
+            <img src="./img/1.jpg" alt="BMW M5 2025" loading="lazy">
+            <div class="card-content">
+                <h3>Премиум-подбор под ключ</h3>
+                <p>Индивидуальный поиск по бюджету и пожеланиям. Мы имеем доступ ко всем дилерским автоцентрам и эксклюзивным лизинговым аукционам. Подберем лучший вариант за 24–48 часов.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="./img/2.jpg" alt="Rolls-Royce Phantom" loading="lazy">
+            <div class="card-content">
+                <h3>Покупка без посредников</h3>
+                <p>Покупаем напрямую у дилеров и на аукционах — без лишних комиссий. Прозрачные договора и безопасная оплата.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="./img/3.jpg" alt="Mercedes-Maybach" loading="lazy">
+            <div class="card-content">
+                <h3>Доставка и логистика под ключ</h3>
+                <p>От двери до двери в Беларусь, Россию и страны СНГ за 35–55 дней. Полная страховка, отслеживание и надежная доставка.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="./img/4.jpg" alt="Maybach" loading="lazy">
+            <div class="card-content">
+                <h3>Таможенное оформление</h3>
+                <p>Работаем по актуальным нормам 2026 года. Растаможка «под ключ», регистрация, скидки и опции страхования/лизинга.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="./img/5.jpg" alt="BMW Frozen" loading="lazy">
+            <div class="card-content">
+                <h3>Быстрая доставка и помощь с лотом</h3>
+                <p>Наши эксперты помогают выиграть лот и организовать быструю доставку: 3–4 недели из Европы, 60–100 дней из США/Китая.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="./img/6.jpg" alt="BMW M" loading="lazy">
+            <div class="card-content">
+                <h3>Чистая доставка и проверка</h3>
+                <p>Покупка у дилеров и прямые ставки на аукционах. Экономия 20–35% с полными отчётами и проверками состояния.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contacts" class="contacts">
+    <div class="contact-info">
+        <p><strong>Минск</strong> • +375 (44) 7777 002</p>
+        <p>Telegram / WhatsApp: <a href="https://t.me/grancarby" style="color:var(--accent)">@grancarby</a></p>
+    </div>
+
+    <form id="lead-form">
+        <input type="tel" placeholder="Ваш номер телефона" required pattern="[+]?[0-9]{9,15}"/>
+        <button type="submit" class="btn">Получить эксклюзивный подбор</button>
+    </form>
+</section>
+
+<footer>
+    <p>© 2026 GranCar. Только лучшие авто. Все права защищены.</p>
+</footer>
+
+<script>
+    const body = document.body;
+    const hamburger = document.getElementById('hamburger');
+    const menuOverlay = document.getElementById('menu-overlay');
+    const menuClose = document.getElementById('menu-close');
+
+    function openMenu() {
+        body.classList.add('is-open');
+        hamburger.setAttribute('aria-expanded','true');
+        menuOverlay.setAttribute('aria-hidden','false');
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+        body.classList.remove('is-open');
+        hamburger.setAttribute('aria-expanded','false');
+        menuOverlay.setAttribute('aria-hidden','true');
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', () => {
+        if (body.classList.contains('is-open')) closeMenu();
+        else openMenu();
+    });
+    menuClose.addEventListener('click', closeMenu);
+
+    document.getElementById('menu-list').addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') {
+            closeMenu();
+        }
+    });
+
+    // Smooth scroll to services when CTA clicked
+    const heroBtn = document.getElementById('hero-cta-btn');
+    if (heroBtn) {
+        heroBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelector('#services').scrollIntoView({behavior:'smooth', block:'start'});
+        });
+    }
+
+    // Form handler
+    document.getElementById('lead-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const phone = e.target[0].value;
+        if (!phone) return;
+        alert(`Заявка принята! Свяжемся в течение 30 минут.\nНомер: ${phone}`);
+        e.target.reset();
+    });
+
+    // Anchor offset for fixed header
+    (function(){
+        function offsetAnchor() {
+            if(location.hash.length > 0) {
+                const h = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 72;
+                window.scrollTo(window.scrollX, window.scrollY - h + 6);
+            }
+        }
+        window.addEventListener("hashchange", offsetAnchor);
+        window.addEventListener("load", offsetAnchor);
+    })();
+</script>
+</body>
+</html>
